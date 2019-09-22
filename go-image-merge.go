@@ -11,13 +11,17 @@ import (
 	"strings"
 )
 
-type GridSizeMode int
+// Specifies how the grid pixel size should be calculated
+type gridSizeMode int
 
 const (
-	FixedGridSize GridSizeMode = iota
-	GridSizeFromImage
+	// The size in pixels is fixed for all the grids
+	fixedGridSize gridSizeMode = iota
+	// The size in pixels is set to the nth image size
+	gridSizeFromImage
 )
 
+// MergeImage is the struct that is responsible for merging the given images
 type MergeImage struct {
 	ImageFilePaths  []string
 	ImageCountDX    int
@@ -25,10 +29,11 @@ type MergeImage struct {
 	BaseDir         string
 	FixedGridSizeX  int
 	FixedGridSizeY  int
-	GridSizeMode    GridSizeMode
+	GridSizeMode    gridSizeMode
 	GridSizeFromNth int
 }
 
+// New returns a new *MergeImage instance
 func New(paths []string, imageCountDX, imageCountDY int, opts ...func(*MergeImage)) *MergeImage {
 	mi := &MergeImage{
 		ImageFilePaths: paths,
@@ -43,23 +48,26 @@ func New(paths []string, imageCountDX, imageCountDY int, opts ...func(*MergeImag
 	return mi
 }
 
+// OptBaseDir is an functional option to set the BaseDir field
 func OptBaseDir(dir string) func(*MergeImage) {
 	return func(mi *MergeImage) {
 		mi.BaseDir = dir
 	}
 }
 
+// OptGridSize is an functional option to set the GridSize X & Y
 func OptGridSize(sizeX, sizeY int) func(*MergeImage) {
 	return func(mi *MergeImage) {
-		mi.GridSizeMode = FixedGridSize
+		mi.GridSizeMode = fixedGridSize
 		mi.FixedGridSizeX = sizeX
 		mi.FixedGridSizeY = sizeY
 	}
 }
 
+// OptGridSizeFromNthImageSize is an functional option to set the GridSize from the nth image
 func OptGridSizeFromNthImageSize(n int) func(*MergeImage) {
 	return func(mi *MergeImage) {
-		mi.GridSizeMode = GridSizeFromImage
+		mi.GridSizeMode = gridSizeFromImage
 		mi.GridSizeFromNth = n
 	}
 }
@@ -116,10 +124,10 @@ func (m *MergeImage) mergeImages(images []image.Image, canvasXUnit, canvasYUnit 
 	imageBoundX := 0
 	imageBoundY := 0
 
-	if m.GridSizeMode == FixedGridSize && m.FixedGridSizeX != 0 && m.FixedGridSizeY != 0 {
+	if m.GridSizeMode == fixedGridSize && m.FixedGridSizeX != 0 && m.FixedGridSizeY != 0 {
 		imageBoundX = m.FixedGridSizeX
 		imageBoundY = m.FixedGridSizeY
-	} else if m.GridSizeMode == GridSizeFromImage {
+	} else if m.GridSizeMode == gridSizeFromImage {
 		imageBoundX = images[m.GridSizeFromNth].Bounds().Dx()
 		imageBoundY = images[m.GridSizeFromNth].Bounds().Dy()
 	} else {
@@ -146,6 +154,7 @@ func (m *MergeImage) mergeImages(images []image.Image, canvasXUnit, canvasYUnit 
 	return rgba, nil
 }
 
+// Merge reads the contents of the given file paths, merges them according to given configuration
 func (m *MergeImage) Merge() (*image.RGBA, error) {
 	images, err := m.readImageFiles(m.ImageFilePaths)
 	if err != nil {
