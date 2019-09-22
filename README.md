@@ -2,6 +2,7 @@
 
 `gim` is a image merging library that can accept image paths as input, read the image contents, merge them into a grid with the desired size. 
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/ozankasikci/go-image-merge)](https://goreportcard.com/report/github.com/ozankasikci/go-image-merge)
 [![GoDoc](https://godoc.org/github.com/ozankasikci/go-image-merge?status.svg)](https://godoc.org/github.com/ozankasikci/go-image-merge)
 
 ## Table of Contents
