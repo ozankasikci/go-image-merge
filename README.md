@@ -47,7 +47,11 @@ err = png.Encode(file, rgba)
 
 ### Grid Unit Count - Horizontal
 ```go
-paths := []string{ "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg" }
+paths := []string{
+	"./cmd/gim/kitten.jpg",
+	"./cmd/gim/kitten.jpg",
+	"./cmd/gim/kitten.jpg"
+}
 rgba, err := gim.New(paths, 3, 1).Merge()
 ```
 
@@ -56,7 +60,12 @@ rgba, err := gim.New(paths, 3, 1).Merge()
 
 ### Grid Unit Count - Vertical & Horizontal
 ```go
-paths := []string{ "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg" }
+paths := []string{
+	"./cmd/gim/kitten.jpg",
+	"./cmd/gim/kitten.jpg",
+	"./cmd/gim/kitten.jpg",
+	"./cmd/gim/kitten.jpg"
+}
 rgba, err := gim.New(paths, 2, 2).Merge()
 ```
 
@@ -66,14 +75,20 @@ rgba, err := gim.New(paths, 2, 2).Merge()
 ### Functional Options - BaseDir
 ```go
 // you can omit the full if you set a base dir
-paths := []string{ "kitten.jpg", "kitten.jpg" }
+paths := []string{
+	"kitten.jpg",
+	"kitten.jpg"
+}
 rgba, err := gim.New(paths, 1, 2, gim.OptBaseDir("./cmd/gim")).Merge()
 ```
 
 ### Functional Options - GridSize
 ```go
 // you can resize the grids in pixels
-paths := []string{ "kitten.jpg", "kitten.jpg" }
+paths := []string{
+	"kitten.jpg",
+	"kitten.jpg"
+}
 rgba, err := gim.New( paths, 2, 1, gim.OptBaseDir("./cmd/gim"), gim.OptGridSize(200,150)).Merge()
 ```
 #### Output

@@ -19,14 +19,14 @@ const (
 )
 
 type MergeImage struct {
-	ImageFilePaths   []string
-	ImageCountDX     int
-	ImageCountDY     int
-	BaseDir          string
-	FixedGridSizeX   int
-	FixedGridSizeY   int
-	GridSizeMode     GridSizeMode
-	GridSizeFromNth  int
+	ImageFilePaths  []string
+	ImageCountDX    int
+	ImageCountDY    int
+	BaseDir         string
+	FixedGridSizeX  int
+	FixedGridSizeY  int
+	GridSizeMode    GridSizeMode
+	GridSizeFromNth int
 }
 
 func New(paths []string, imageCountDX, imageCountDY int, opts ...func(*MergeImage)) *MergeImage {
@@ -83,7 +83,7 @@ func (m *MergeImage) readImageFiles(paths []string) ([]image.Image, error) {
 	return images, nil
 }
 
-func(m *MergeImage) readImageFile(path string) (image.Image, error) {
+func (m *MergeImage) readImageFile(path string) (image.Image, error) {
 	absPath, err := filepath.Abs(path)
 	if err != nil {
 		return nil, err
@@ -96,7 +96,7 @@ func(m *MergeImage) readImageFile(path string) (image.Image, error) {
 
 	var img image.Image
 	splittedPath := strings.Split(path, ".")
-	ext := splittedPath[len(splittedPath) - 1]
+	ext := splittedPath[len(splittedPath)-1]
 
 	if ext == "jpg" || ext == "jpeg" {
 		img, err = jpeg.Decode(imgFile)
@@ -116,7 +116,7 @@ func (m *MergeImage) mergeImages(images []image.Image, canvasXUnit, canvasYUnit 
 	imageBoundX := 0
 	imageBoundY := 0
 
-	if m.GridSizeMode == FixedGridSize && m.FixedGridSizeX != 0 && m.FixedGridSizeY != 0{
+	if m.GridSizeMode == FixedGridSize && m.FixedGridSizeX != 0 && m.FixedGridSizeY != 0 {
 		imageBoundX = m.FixedGridSizeX
 		imageBoundY = m.FixedGridSizeY
 	} else if m.GridSizeMode == GridSizeFromImage {
@@ -154,4 +154,3 @@ func (m *MergeImage) Merge() (*image.RGBA, error) {
 
 	return m.mergeImages(images, m.ImageCountDX, m.ImageCountDY)
 }
-

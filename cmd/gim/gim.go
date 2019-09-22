@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	paths := []string {
+	paths := []string{
 		"cmd/gim/kitten.jpg",
 		"cmd/gim/kitten.jpg",
 	}
@@ -17,7 +17,7 @@ func main() {
 		paths, 2, 1,
 	).Merge()
 	if err != nil {
-        log.Panicf(err.Error())
+		log.Panicf(err.Error())
 	}
 
 	file, err := os.Create("cmd/gim/merged.jpg")
