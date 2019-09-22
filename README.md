@@ -11,7 +11,7 @@
 - [Getting Started](#getting-started)
 - [Examples](#examples)
   * [Grid Unit Count - Horizontal](#grid-unit-count---horizontal)
-  * [Grid Unit Count - Vertical](#grid-unit-count---vertical)
+  * [Grid Unit Count - Vertical & Horizontal](#grid-unit-count---vertical--horizontal)
 - [TODO](#todo)
 
 ## Overview
@@ -54,14 +54,14 @@ rgba, err := gim.New(paths, 3, 1).Merge()
 #### Output
 ![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/grid-size-3-1.jpg)
 
-### Grid Unit Count - Vertical
+### Grid Unit Count - Vertical & Horizontal
 ```go
-paths := []string{ "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg" }
-rgba, err := gim.New(paths, 1, 2).Merge()
+paths := []string{ "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg" }
+rgba, err := gim.New(paths, 2, 2).Merge()
 ```
 
 #### Output
-![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/grid-size-1-2.jpg)
+![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/grid-size-2-2.jpg)
 
 ### Functional Options - BaseDir
 ```go
