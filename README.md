@@ -8,14 +8,10 @@
 
 - [Overview](#overview)
 - [Installation](#installation)
-  * [Installing as an Executable](#installing-as-an-executable)
-  * [Installing as a Library](#installing-as-a-library)
 - [Getting Started](#getting-started)
-  * [Using dfg as an Executable](#using-dfg-as-an-executable)
-  * [Using dfg as a Library](#using-dfg-as-a-library)
 - [Examples](#examples)
-  * [YAML File Example](#yaml-file-example)
-  * [Library Usage Example](#library-usage-example)
+  * [Grid Unit Count - Horizontal](#grid-unit-count---horizontal)
+  * [Grid Unit Count - Vertical](#grid-unit-count---vertical)
 - [TODO](#todo)
 
 ## Overview
@@ -49,7 +45,7 @@ err = png.Encode(file, rgba)
 
 ## Examples
 
-### Grid size - Horizontal
+### Grid Unit Count - Horizontal
 ```go
 paths := []string{ "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg" }
 rgba, err := gim.New(paths, 3, 1).Merge()
@@ -58,7 +54,7 @@ rgba, err := gim.New(paths, 3, 1).Merge()
 #### Output
 ![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/grid-size-3-1.jpg)
 
-### Grid size - Vertical
+### Grid Unit Count - Vertical
 ```go
 paths := []string{ "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg" }
 rgba, err := gim.New(paths, 1, 2).Merge()
