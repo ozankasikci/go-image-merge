@@ -1,6 +1,7 @@
 package go_image_merge
 
 import (
+	"errors"
 	"image"
 	"image/draw"
 	"image/png"
@@ -8,13 +9,22 @@ import (
 	"path/filepath"
 )
 
+type GridSizeMode int
+
+const (
+	FixedGridSize GridSizeMode = iota
+	GridSizeFromImage
+)
+
 type MergeImage struct {
 	ImageFilePaths []string
 	ImageCountDX   int
 	ImageCountDY   int
 	BaseDir        string
-	FixedSizeX     int
-	FixedSizeY     int
+	FixedGridSizeX int
+	FixedGridSizeY int
+	GridSizeMode   GridSizeMode
+	GridSizeFromNth int
 }
 
 func New(paths []string, imageCountDX, imageCountDY int, opts ...func(*MergeImage)) *MergeImage {
@@ -39,8 +49,16 @@ func BaseDir(dir string) func(*MergeImage) {
 
 func GridSize(sizeX, sizeY int) func(*MergeImage) {
 	return func(mi *MergeImage) {
-		mi.FixedSizeX = sizeX
-		mi.FixedSizeY = sizeY
+		mi.GridSizeMode = FixedGridSize
+		mi.FixedGridSizeX = sizeX
+		mi.FixedGridSizeY = sizeY
+	}
+}
+
+func GridSizeFromNthImageSize(n int) func(*MergeImage) {
+	return func(mi *MergeImage) {
+		mi.GridSizeMode = GridSizeFromImage
+		mi.GridSizeFromNth = n
 	}
 }
 
@@ -82,16 +100,21 @@ func readImageFile(path string) (image.Image, error) {
 	return img, nil
 }
 
-func (m *MergeImage) mergeImages(images []image.Image, canvasXUnit, canvasYUnit int) *image.RGBA {
+func (m *MergeImage) mergeImages(images []image.Image, canvasXUnit, canvasYUnit int) (*image.RGBA, error) {
 	var rgba *image.RGBA
 	imageBoundX := 0
 	imageBoundY := 0
 
-	if m.FixedSizeX != 0 && m.FixedSizeY != 0{
-		imageBoundX = m.FixedSizeX
-		imageBoundY = m.FixedSizeY
+	if m.GridSizeMode == FixedGridSize && m.FixedGridSizeX != 0 && m.FixedGridSizeY != 0{
+		imageBoundX = m.FixedGridSizeX
+		imageBoundY = m.FixedGridSizeY
+	} else if m.GridSizeMode == GridSizeFromImage {
+		imageBoundX = images[m.GridSizeFromNth].Bounds().Dx()
+		imageBoundY = images[m.GridSizeFromNth].Bounds().Dy()
+	} else {
+		return nil, errors.New("you need to set a GridSize mode")
 	}
-	
+
 	canvasX := canvasXUnit * imageBoundX
 	canvasY := canvasYUnit * imageBoundY
 
@@ -108,7 +131,7 @@ func (m *MergeImage) mergeImages(images []image.Image, canvasXUnit, canvasYUnit 
 		draw.Draw(rgba, rec, img, image.Point{0, 0}, draw.Src)
 	}
 
-	return rgba
+	return rgba, nil
 }
 
 func (m *MergeImage) Merge() (*image.RGBA, error) {
@@ -117,6 +140,6 @@ func (m *MergeImage) Merge() (*image.RGBA, error) {
 		return nil, err
 	}
 
-	return m.mergeImages(images, m.ImageCountDX, m.ImageCountDY), nil
+	return m.mergeImages(images, m.ImageCountDX, m.ImageCountDY)
 }
 
