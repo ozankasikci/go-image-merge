@@ -89,7 +89,10 @@ paths := []string{
 	"kitten.jpg",
 	"kitten.jpg"
 }
-rgba, err := gim.New( paths, 2, 1, gim.OptBaseDir("./cmd/gim"), gim.OptGridSize(200,150)).Merge()
+rgba, err := gim.New( paths, 2, 1,
+	gim.OptBaseDir("./cmd/gim"),
+	gim.OptGridSize(200,150)
+).Merge()
 ```
 #### Output
 ![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/grid-resize-pixels-200-150.jpg)
