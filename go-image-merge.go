@@ -6,6 +6,7 @@ import (
 	"image/jpeg"
 	"image/png"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 )
@@ -66,12 +67,12 @@ func OptGridSizeFromNthImageSize(n int) func(*MergeImage) {
 func (m *MergeImage) readImageFiles(paths []string) ([]image.Image, error) {
 	var images []image.Image
 
-	for _, path := range paths {
+	for _, imgPath := range paths {
 		if m.BaseDir != "" {
-			path = m.BaseDir + path
+			imgPath = path.Join(m.BaseDir, imgPath)
 		}
 
-		img, err := m.readImageFile(path)
+		img, err := m.readImageFile(imgPath)
 		if err != nil {
 			return nil, err
 		}
