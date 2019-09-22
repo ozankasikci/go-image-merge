@@ -1,12 +1,13 @@
 package go_image_merge
 
 import (
-	"errors"
 	"image"
 	"image/draw"
+	"image/jpeg"
 	"image/png"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type GridSizeMode int
@@ -17,14 +18,14 @@ const (
 )
 
 type MergeImage struct {
-	ImageFilePaths []string
-	ImageCountDX   int
-	ImageCountDY   int
-	BaseDir        string
-	FixedGridSizeX int
-	FixedGridSizeY int
-	GridSizeMode   GridSizeMode
-	GridSizeFromNth int
+	ImageFilePaths   []string
+	ImageCountDX     int
+	ImageCountDY     int
+	BaseDir          string
+	FixedGridSizeX   int
+	FixedGridSizeY   int
+	GridSizeMode     GridSizeMode
+	GridSizeFromNth  int
 }
 
 func New(paths []string, imageCountDX, imageCountDY int, opts ...func(*MergeImage)) *MergeImage {
@@ -41,13 +42,13 @@ func New(paths []string, imageCountDX, imageCountDY int, opts ...func(*MergeImag
 	return mi
 }
 
-func BaseDir(dir string) func(*MergeImage) {
+func OptBaseDir(dir string) func(*MergeImage) {
 	return func(mi *MergeImage) {
 		mi.BaseDir = dir
 	}
 }
 
-func GridSize(sizeX, sizeY int) func(*MergeImage) {
+func OptGridSize(sizeX, sizeY int) func(*MergeImage) {
 	return func(mi *MergeImage) {
 		mi.GridSizeMode = FixedGridSize
 		mi.FixedGridSizeX = sizeX
@@ -55,7 +56,7 @@ func GridSize(sizeX, sizeY int) func(*MergeImage) {
 	}
 }
 
-func GridSizeFromNthImageSize(n int) func(*MergeImage) {
+func OptGridSizeFromNthImageSize(n int) func(*MergeImage) {
 	return func(mi *MergeImage) {
 		mi.GridSizeMode = GridSizeFromImage
 		mi.GridSizeFromNth = n
@@ -70,7 +71,7 @@ func (m *MergeImage) readImageFiles(paths []string) ([]image.Image, error) {
 			path = m.BaseDir + path
 		}
 
-		img, err := readImageFile(path)
+		img, err := m.readImageFile(path)
 		if err != nil {
 			return nil, err
 		}
@@ -81,7 +82,7 @@ func (m *MergeImage) readImageFiles(paths []string) ([]image.Image, error) {
 	return images, nil
 }
 
-func readImageFile(path string) (image.Image, error) {
+func(m *MergeImage) readImageFile(path string) (image.Image, error) {
 	absPath, err := filepath.Abs(path)
 	if err != nil {
 		return nil, err
@@ -92,7 +93,16 @@ func readImageFile(path string) (image.Image, error) {
 		return nil, err
 	}
 
-	img, err := png.Decode(imgFile)
+	var img image.Image
+	splittedPath := strings.Split(path, ".")
+	ext := splittedPath[len(splittedPath) - 1]
+
+	if ext == "jpg" || ext == "jpeg" {
+		img, err = jpeg.Decode(imgFile)
+	} else {
+		img, err = png.Decode(imgFile)
+	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +122,8 @@ func (m *MergeImage) mergeImages(images []image.Image, canvasXUnit, canvasYUnit 
 		imageBoundX = images[m.GridSizeFromNth].Bounds().Dx()
 		imageBoundY = images[m.GridSizeFromNth].Bounds().Dy()
 	} else {
-		return nil, errors.New("you need to set a GridSize mode")
+		imageBoundX = images[0].Bounds().Dx()
+		imageBoundY = images[0].Bounds().Dy()
 	}
 
 	canvasX := canvasXUnit * imageBoundX

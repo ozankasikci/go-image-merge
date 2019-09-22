@@ -9,18 +9,18 @@ import (
 
 func main() {
 	paths := []string {
-		"cmd/gim/heart.png",
+		"cmd/gim/kitten.jpg",
+		"cmd/gim/kitten.jpg",
 	}
 
 	rgba, err := gim.New(
 		paths, 2, 1,
-		gim.GridSizeFromNthImageSize(0),
 	).Merge()
 	if err != nil {
         log.Panicf(err.Error())
 	}
 
-	file, err := os.Create("test.jpg")
+	file, err := os.Create("cmd/gim/merged.jpg")
 	if err != nil {
 		log.Panicf(err.Error())
 	}
