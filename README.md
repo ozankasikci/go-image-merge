@@ -91,7 +91,7 @@ paths := []string{
 }
 rgba, err := gim.New( paths, 2, 1,
 	gim.OptBaseDir("./cmd/gim"),
-	gim.OptGridSize(200,150)
+	gim.OptGridSize(200,150),
 ).Merge()
 ```
 #### Output
