@@ -17,9 +17,9 @@
 
 ## Overview
 
-`gim` provides an easy way to merge images into a flexible grid system as a GO library.
+`gim` provides an easy way to merge images into a flexible grid system.
 
-The main purpose of the library is to help creating image collages programatically.
+The main purpose of the library is to help creating image collages programmatically.
 
 ## Installation
 
