@@ -36,7 +36,7 @@ import gim "github.com/ozankasikci/go-image-merge"
 
 // accepts image paths, grid size x, grid size y
 // returns an *image.RGBA object
-rgba, err := gim.New([]string{ "./cmd/gim/kitten.jpg" }, 2, 1).Merge()
+rgba, err := gim.New([]string{ "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg" }, 2, 1).Merge()
 
 // save the output to jpg or png
 file, err := os.Create("file/path.jpg|png")
