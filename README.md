@@ -34,7 +34,7 @@ Basic usage:
 ```go
 import gim "github.com/ozankasikci/go-image-merge"
 
-// accepts image paths, grid size x, grid size y
+// accepts image paths, grid unit count x, grid unit count y
 // returns an *image.RGBA object
 rgba, err := gim.New([]string{ "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg" }, 2, 1).Merge()
 
