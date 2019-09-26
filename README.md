@@ -75,7 +75,7 @@ rgba, err := gim.New(paths, 2, 2).Merge()
 
 ### Functional Options - BaseDir
 ```go
-// you can omit the full if you set a base dir
+// you can omit the full path if you set a base dir
 paths := []string{
 	"kitten.jpg",
 	"kitten.jpg"
