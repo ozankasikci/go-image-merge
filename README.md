@@ -88,7 +88,7 @@ rgba, err := gim.New(grids, 2, 1).Merge()
 
 ### Grid Layers - Draw Grids on top of Grids
 ```go
-rids := []*gim.Grid{
+grids := []*gim.Grid{
     {
         ImageFilePath: "./cmd/gim/input/ginger.png",
         BackgroundColor: color.White,
