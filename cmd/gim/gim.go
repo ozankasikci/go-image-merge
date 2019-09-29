@@ -11,11 +11,11 @@ import (
 func main() {
 	grids := []*gim.Grid{
 		{
-			ImageFilePath: "./cmd/gim/input/ginger.png",
+			ImageFilePath:   "./cmd/gim/input/ginger.png",
 			BackgroundColor: color.White,
 		},
 		{
-			ImageFilePath: "./cmd/gim/input/ginger.png",
+			ImageFilePath:   "./cmd/gim/input/ginger.png",
 			BackgroundColor: color.RGBA{R: 0x8b, G: 0xd0, B: 0xc6},
 		},
 	}
