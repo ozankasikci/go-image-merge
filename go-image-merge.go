@@ -24,8 +24,11 @@ const (
 
 // Grid holds the data for each grid
 type Grid struct {
-	ImageFilePath string
+	ImageFilePath   string
 	BackgroundColor color.Color
+	OffsetX         int
+	OffsetY         int
+	Grids           []*Grid
 }
 
 // MergeImage is the struct that is responsible for merging the given images
@@ -43,9 +46,9 @@ type MergeImage struct {
 // New returns a new *MergeImage instance
 func New(grids []*Grid, imageCountDX, imageCountDY int, opts ...func(*MergeImage)) *MergeImage {
 	mi := &MergeImage{
-		Grids: grids,
-		ImageCountDX:   imageCountDX,
-		ImageCountDY:   imageCountDY,
+		Grids:        grids,
+		ImageCountDX: imageCountDX,
+		ImageCountDY: imageCountDY,
 	}
 
 	for _, option := range opts {
@@ -53,12 +56,6 @@ func New(grids []*Grid, imageCountDX, imageCountDY int, opts ...func(*MergeImage
 	}
 
 	return mi
-}
-
-func NewDefaultGrid(path string) *Grid {
-	return &Grid{
-		ImageFilePath: path,
-	}
 }
 
 // OptBaseDir is an functional option to set the BaseDir field
@@ -92,7 +89,7 @@ func (m *MergeImage) readGridImage(grid *Grid) (image.Image, error) {
 		imgPath = path.Join(m.BaseDir, grid.ImageFilePath)
 	}
 
-	return  m.readImageFile(imgPath)
+	return m.readImageFile(imgPath)
 }
 
 func (m *MergeImage) readGridsImages() ([]image.Image, error) {
@@ -101,7 +98,7 @@ func (m *MergeImage) readGridsImages() ([]image.Image, error) {
 	for _, grid := range m.Grids {
 		img, err := m.readGridImage(grid)
 		if err != nil {
-		    return nil, err
+			return nil, err
 		}
 
 		images = append(images, img)
@@ -138,15 +135,10 @@ func (m *MergeImage) readImageFile(path string) (image.Image, error) {
 	return img, nil
 }
 
-func (m *MergeImage) mergeGrids() (*image.RGBA, error) {
+func (m *MergeImage) mergeGrids(images []image.Image) (*image.RGBA, error) {
 	var canvas *image.RGBA
 	imageBoundX := 0
 	imageBoundY := 0
-
-	images, err := m.readGridsImages()
-	if err != nil {
-	    return nil, err
-	}
 
 	if m.GridSizeMode == fixedGridSize && m.FixedGridSizeX != 0 && m.FixedGridSizeY != 0 {
 		imageBoundX = m.FixedGridSizeX
@@ -166,6 +158,7 @@ func (m *MergeImage) mergeGrids() (*image.RGBA, error) {
 	canvasRect := image.Rectangle{image.Point{0, 0}, canvasMaxPoint}
 	canvas = image.NewRGBA(canvasRect)
 
+	// draw grids one by one
 	for i, grid := range m.Grids {
 		img := images[i]
 		x := i % m.ImageCountDX
@@ -180,6 +173,21 @@ func (m *MergeImage) mergeGrids() (*image.RGBA, error) {
 		} else {
 			draw.Draw(canvas, nextGridRect, img, image.Point{}, draw.Src)
 		}
+
+		if grid.Grids == nil {
+			continue
+		}
+
+		// draw top layer grids
+		for _, grid := range grid.Grids {
+			img, err := m.readGridImage(grid)
+			if err != nil {
+				return nil, err
+			}
+
+			gridRect := nextGridRect.Bounds().Add(image.Point{grid.OffsetX, grid.OffsetY})
+			draw.Draw(canvas, gridRect, img, image.Point{}, draw.Over)
+		}
 	}
 
 	return canvas, nil
@@ -187,5 +195,10 @@ func (m *MergeImage) mergeGrids() (*image.RGBA, error) {
 
 // Merge reads the contents of the given file paths, merges them according to given configuration
 func (m *MergeImage) Merge() (*image.RGBA, error) {
-	return m.mergeGrids()
+	images, err := m.readGridsImages()
+	if err != nil {
+		return nil, err
+	}
+
+	return m.mergeGrids(images)
 }
