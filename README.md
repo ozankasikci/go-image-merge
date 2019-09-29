@@ -99,5 +99,6 @@ rgba, err := gim.New( paths, 2, 1,
 ![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/grid-resize-pixels-200-150.jpg)
 
 ## TODO
-- [ ] Add colored background support
+- [x] Add colored background support
+- [ ] Add resize support (stretch, fit etc.)
 
