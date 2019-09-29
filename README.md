@@ -88,20 +88,29 @@ rgba, err := gim.New(grids, 2, 1).Merge()
 
 ### Grid Layers - Draw Grids on top of Grids
 ```go
-grids := []*gim.Grid{
+rids := []*gim.Grid{
     {
         ImageFilePath: "./cmd/gim/input/ginger.png",
         BackgroundColor: color.White,
         Grids: []*gim.Grid{
-            {ImageFilePath: "./cmd/gim/input/tick.png", OffsetX: 50, OffsetY: 20},
+            {
+            	ImageFilePath: "./cmd/gim/input/tick.png",
+            	OffsetX: 50, OffsetY: 20,
+            },
         },
     },
     {
         ImageFilePath: "./cmd/gim/input/ginger.png",
         BackgroundColor: color.RGBA{R: 0x8b, G: 0xd0, B: 0xc6},
         Grids: []*gim.Grid{
-            {ImageFilePath: "./cmd/gim/input/tick.png", OffsetX: 200, OffsetY: 170},
-            {ImageFilePath: "./cmd/gim/input/tick.png", OffsetX: 200, OffsetY: 20},
+            {
+            	ImageFilePath: "./cmd/gim/input/tick.png",
+            	OffsetX: 200, OffsetY: 170,
+            },
+            {
+            	ImageFilePath: "./cmd/gim/input/tick.png",
+            	OffsetX: 200, OffsetY: 20,
+            },
         },
     },
 }
@@ -120,7 +129,9 @@ grids := []*gim.Grid{
     {ImageFilePath: "kitten.jpg"},
     {ImageFilePath: "kitten.jpg"},
 }
-rgba, err := gim.New(grids, 1, 2, gim.OptBaseDir("./cmd/gim/input")).Merge()
+rgba, err := gim.New(grids, 1, 2,
+	gim.OptBaseDir("./cmd/gim/input"),
+).Merge()
 ```
 
 ### OptGridSize
