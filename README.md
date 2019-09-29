@@ -11,13 +11,15 @@
 - [Installation](#installation)
 - [Getting Started](#getting-started)
 - [Examples](#examples)
-  * [Grid Unit Count - Horizontal](#grid-unit-count---horizontal)
   * [Grid Unit Count - Vertical & Horizontal](#grid-unit-count---vertical--horizontal)
+  * [Grid Background Color](#grid-background-color)
+  * [Grid Layers - Draw Grids on top of Grids](#grid-layers---draw-grids-on-top-of-grids)
+- [Functional Options](#functional-options)
 - [TODO](#todo)
 
 ## Overview
 
-`gim` provides an easy way to merge images into a flexible grid system.
+`gim` provides an easy and extensible way to merge images into a flexible grid system.
 
 The main purpose of the library is to help creating image collages programmatically.
 
@@ -34,9 +36,13 @@ Basic usage:
 ```go
 import gim "github.com/ozankasikci/go-image-merge"
 
-// accepts image paths, grid unit count x, grid unit count y
+// accepts *Grid instances, grid unit count x, grid unit count y
 // returns an *image.RGBA object
-rgba, err := gim.New([]string{ "./cmd/gim/kitten.jpg", "./cmd/gim/kitten.jpg" }, 2, 1).Merge()
+grids := []*gim.Grid{
+	{ImageFilePath: "file.jpg"},
+	{ImageFilePath: "file.png"},
+}
+rgba, err := gim.New(grids, 2, 1).Merge()
 
 // save the output to jpg or png
 file, err := os.Create("file/path.jpg|png")
@@ -44,53 +50,87 @@ err = jpeg.Encode(file, rgba, &jpeg.Options{Quality: 80})
 err = png.Encode(file, rgba)
 ```
 
+See [Examples](#examples) for available options and advanced usage.
+
 ## Examples
-
-### Grid Unit Count - Horizontal
-```go
-paths := []string{
-	"./cmd/gim/kitten.jpg",
-	"./cmd/gim/kitten.jpg",
-	"./cmd/gim/kitten.jpg"
-}
-rgba, err := gim.New(paths, 3, 1).Merge()
-```
-
-#### Output
-![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/grid-size-3-1.jpg)
 
 ### Grid Unit Count - Vertical & Horizontal
 ```go
-paths := []string{
-	"./cmd/gim/kitten.jpg",
-	"./cmd/gim/kitten.jpg",
-	"./cmd/gim/kitten.jpg",
-	"./cmd/gim/kitten.jpg"
+grids := []*gim.Grid{
+    {ImageFilePath: "./cmd/gim/input/kitten.jpg"},
+    {ImageFilePath: "./cmd/gim/input/kitten.jpg"},
+    {ImageFilePath: "./cmd/gim/input/kitten.jpg"},
+    {ImageFilePath: "./cmd/gim/input/kitten.jpg"},
 }
-rgba, err := gim.New(paths, 2, 2).Merge()
+rgba, err := gim.New(grids, 2, 2).Merge()
 ```
 
 #### Output
 ![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/grid-size-2-2.jpg)
 
-### Functional Options - BaseDir
+### Grid Background Color
 ```go
-// you can omit the full path if you set a base dir
-paths := []string{
-	"kitten.jpg",
-	"kitten.jpg"
+grids := []*gim.Grid{
+    {
+        ImageFilePath: "./cmd/gim/input/ginger.png",
+        BackgroundColor: color.White,
+    },
+    {
+        ImageFilePath: "./cmd/gim/input/ginger.png",
+        BackgroundColor: color.RGBA{R: 0x8b, G: 0xd0, B: 0xc6},
+    },
 }
-rgba, err := gim.New(paths, 1, 2, gim.OptBaseDir("./cmd/gim")).Merge()
+rgba, err := gim.New(grids, 2, 1).Merge()
 ```
 
-### Functional Options - GridSize
+#### Output
+![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/grid-bg-color.jpg)
+
+### Grid Layers - Draw Grids on top of Grids
+```go
+grids := []*gim.Grid{
+    {
+        ImageFilePath: "./cmd/gim/input/ginger.png",
+        BackgroundColor: color.White,
+        Grids: []*gim.Grid{
+            {ImageFilePath: "./cmd/gim/input/tick.png", OffsetX: 50, OffsetY: 20},
+        },
+    },
+    {
+        ImageFilePath: "./cmd/gim/input/ginger.png",
+        BackgroundColor: color.RGBA{R: 0x8b, G: 0xd0, B: 0xc6},
+        Grids: []*gim.Grid{
+            {ImageFilePath: "./cmd/gim/input/tick.png", OffsetX: 200, OffsetY: 170},
+            {ImageFilePath: "./cmd/gim/input/tick.png", OffsetX: 200, OffsetY: 20},
+        },
+    },
+}
+rgba, err := gim.New(grids, 2, 1).Merge()
+```
+
+#### Output
+![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/grid-layers.jpg)
+
+## Functional Options
+
+### OptBaseDir
+```go
+// you can omit the full path if you set a base dir
+grids := []*gim.Grid{
+    {ImageFilePath: "kitten.jpg"},
+    {ImageFilePath: "kitten.jpg"},
+}
+rgba, err := gim.New(grids, 1, 2, gim.OptBaseDir("./cmd/gim/input")).Merge()
+```
+
+### OptGridSize
 ```go
 // you can resize the grids in pixels
-paths := []string{
-	"kitten.jpg",
-	"kitten.jpg"
+grids := []*gim.Grid{
+    {ImageFilePath: "kitten.jpg"},
+    {ImageFilePath: "kitten.jpg"},
 }
-rgba, err := gim.New( paths, 2, 1,
+rgba, err := gim.New( grids, 2, 1,
 	gim.OptBaseDir("./cmd/gim"),
 	gim.OptGridSize(200,150),
 ).Merge()
