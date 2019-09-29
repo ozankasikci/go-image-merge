@@ -92,6 +92,7 @@ grids := []*gim.Grid{
     {
         ImageFilePath: "./cmd/gim/input/ginger.png",
         BackgroundColor: color.White,
+        // these grids will be drawn on top of the first grid
         Grids: []*gim.Grid{
             {
             	ImageFilePath: "./cmd/gim/input/tick.png",
@@ -102,6 +103,7 @@ grids := []*gim.Grid{
     {
         ImageFilePath: "./cmd/gim/input/ginger.png",
         BackgroundColor: color.RGBA{R: 0x8b, G: 0xd0, B: 0xc6},
+        // these grids will be drawn on top of the second grid
         Grids: []*gim.Grid{
             {
             	ImageFilePath: "./cmd/gim/input/tick.png",
