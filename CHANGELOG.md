@@ -1,3 +1,7 @@
+## v0.2.1 - 2019-11-29
+### Features
+- Export readImageFile method
+
 ## v0.2.0 - 2019-09-29
 
 ### Breaking Changes
