@@ -89,7 +89,7 @@ func (m *MergeImage) readGridImage(grid *Grid) (image.Image, error) {
 		imgPath = path.Join(m.BaseDir, grid.ImageFilePath)
 	}
 
-	return m.readImageFile(imgPath)
+	return m.ReadImageFile(imgPath)
 }
 
 func (m *MergeImage) readGridsImages() ([]image.Image, error) {
@@ -107,7 +107,7 @@ func (m *MergeImage) readGridsImages() ([]image.Image, error) {
 	return images, nil
 }
 
-func (m *MergeImage) readImageFile(path string) (image.Image, error) {
+func (m *MergeImage) ReadImageFile(path string) (image.Image, error) {
 	absPath, err := filepath.Abs(path)
 	if err != nil {
 		return nil, err
