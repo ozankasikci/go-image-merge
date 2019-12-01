@@ -1,6 +1,7 @@
 package goimagemerge
 
 import (
+	"errors"
 	"image"
 	"image/color"
 	"image/draw"
@@ -198,6 +199,10 @@ func (m *MergeImage) Merge() (*image.RGBA, error) {
 	images, err := m.readGridsImages()
 	if err != nil {
 		return nil, err
+	}
+
+	if len(images) == 0 {
+		return nil, errors.New("There is no image to merge")
 	}
 
 	return m.mergeGrids(images)
