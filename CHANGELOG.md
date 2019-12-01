@@ -1,3 +1,7 @@
+## v0.2.2 - 2019-12-01
+### Bug Fixes
+- Check images before trying to merge 
+
 ## v0.2.1 - 2019-11-29
 ### Features
 - Export readImageFile method
