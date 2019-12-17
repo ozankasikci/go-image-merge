@@ -1,4 +1,4 @@
-package goimagemerge
+package go_image_merge
 
 import (
 	"errors"
