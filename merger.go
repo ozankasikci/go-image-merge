@@ -45,54 +45,43 @@ func (t *Merger) readCellImage(cell *Cell) (image.Image, error) {
 
 func (t *Merger) Merge() (*image.RGBA, error) {
 	var canvas *image.RGBA
-	canvasBoundX := 400
-	canvasBoundY := 400
+	canvasBoundX := t.SizeX
+	canvasBoundY := t.SizeY
 
 	canvasMaxPoint := image.Point{canvasBoundX, canvasBoundY}
 	canvasRect := image.Rectangle{image.Point{0, 0}, canvasMaxPoint}
 	canvas = image.NewRGBA(canvasRect)
-
-	for _, row := range t.Rows {
-		images, _ := row.ReadImages()
-		minPoint := image.Point{}
-		maxPoint := minPoint.Add(image.Point{200, 200})
-		gridRect := image.Rectangle{minPoint, maxPoint}
-		draw.Draw(canvas, gridRect, images[0], image.Point{}, draw.Src)
-		//for i, cell := range row.Cells {
-		//	img := images[i]
-		//	x := i % m.ImageCountDX
-		//	y := i / m.ImageCountDX
-		//	minPoint := image.Point{x * imageBoundX, y * imageBoundY}
-		//	maxPoint := minPoint.Add(image.Point{imageBoundX, imageBoundY})
-		//	nextGridRect := image.Rectangle{minPoint, maxPoint}
-		//
-		//	if cell.BackgroundColor != nil {
-		//		draw.Draw(canvas, nextGridRect, &image.Uniform{cell.BackgroundColor}, image.Point{}, draw.Src)
-		//		draw.Draw(canvas, nextGridRect, img, image.Point{}, draw.Over)
-		//	} else {
-		//		draw.Draw(canvas, nextGridRect, img, image.Point{}, draw.Src)
-		//	}
-		//
-		//	if cell.Grids == nil {
-		//		continue
-		//	}
-		//
-		//	// draw top layer grids
-		//	for _, grid := range cell.Grids {
-		//		img, err := m.readGridImage(grid)
-		//		if err != nil {
-		//			return nil, err
-		//		}
-		//
-		//		gridRect := nextGridRect.Bounds().Add(image.Point{grid.OffsetX, grid.OffsetY})
-		//		draw.Draw(canvas, gridRect, img, image.Point{}, draw.Over)
-		//	}
-		//}
+	err := t.drawCells(canvas)
+	if err != nil {
+	    return nil, err
 	}
 
-	// draw grids one by one
-
 	return canvas, nil
+}
+
+func (t *Merger) drawCells(canvas *image.RGBA) error {
+	for i, row := range t.Rows {
+		for j, cell := range row.Cells {
+			img, err := t.readCellImage(cell)
+			if err != nil {
+				return err
+			}
+
+			minPoint := image.Point{j * canvas.Bounds().Dx() / len(row.Cells), i * canvas.Bounds().Dy() / len(t.Rows)}
+			maxPoint := minPoint.Add(image.Point{canvas.Bounds().Dx() / len(row.Cells), canvas.Bounds().Dy() / len(t.Rows)})
+			cellRect := image.Rectangle{minPoint, maxPoint}
+
+			if cell.BackgroundColor != nil {
+				draw.Draw(canvas, cellRect, &image.Uniform{cell.BackgroundColor}, image.Point{}, draw.Src)
+				draw.Draw(canvas, cellRect, img, image.Point{}, draw.Over)
+			} else {
+				draw.Draw(canvas, cellRect, img, image.Point{}, draw.Src)
+			}
+
+		}
+	}
+
+	return nil
 }
 
 // OptBaseDir is an functional option to set the BaseDir field
