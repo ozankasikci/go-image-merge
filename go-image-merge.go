@@ -118,6 +118,7 @@ func (m *MergeImage) ReadImageFile(path string) (image.Image, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer imgFile.Close()
 
 	var img image.Image
 	splittedPath := strings.Split(path, ".")
