@@ -25,6 +25,7 @@ const (
 
 // Grid holds the data for each grid
 type Grid struct {
+	Image           *image.Image
 	ImageFilePath   string
 	BackgroundColor color.Color
 	OffsetX         int
@@ -84,6 +85,10 @@ func OptGridSizeFromNthImageSize(n int) func(*MergeImage) {
 }
 
 func (m *MergeImage) readGridImage(grid *Grid) (image.Image, error) {
+	if grid.Image != nil {
+		return *grid.Image, nil
+	}
+
 	imgPath := grid.ImageFilePath
 
 	if m.BaseDir != "" {
