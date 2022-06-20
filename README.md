@@ -154,4 +154,5 @@ rgba, err := gim.New( grids, 2, 1,
 ## TODO
 - [x] Add colored background support
 - [ ] Add resize support (stretch, fit etc.)
+- [ ] Add filters
 
