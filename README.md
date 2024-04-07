@@ -14,6 +14,7 @@
   * [Grid Unit Count - Vertical & Horizontal](#grid-unit-count---vertical--horizontal)
   * [Grid Background Color](#grid-background-color)
   * [Grid Layers - Draw Grids on top of Grids](#grid-layers---draw-grids-on-top-of-grids)
+  * [Filters](#filters)
 - [Functional Options](#functional-options)
 - [TODO](#todo)
 
