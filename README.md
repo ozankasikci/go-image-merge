@@ -65,7 +65,7 @@ grids := []*gim.Grid{
 rgba, err := gim.New(grids, 2, 2).Merge()
 ```
 
-#### Output
+#### Output:
 ![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/grid-size-2-2.jpg)
 
 ### Grid Background Color
@@ -83,7 +83,7 @@ grids := []*gim.Grid{
 rgba, err := gim.New(grids, 2, 1).Merge()
 ```
 
-#### Output
+#### Output:
 ![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/grid-bg-color.jpg)
 
 ### Grid Layers - Draw Grids on top of Grids
@@ -119,8 +119,39 @@ grids := []*gim.Grid{
 rgba, err := gim.New(grids, 2, 1).Merge()
 ```
 
-#### Output
+#### Output:
 ![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/grid-layers.jpg)
+
+## Filters
+
+### Available Filters
+
+- **Black & White**: Converts an image to grayscale.
+
+### Applying Filters
+
+To apply filters, include them in the `Filters` slice of the `Grid` struct. Each `Grid` can have multiple filters applied, which will be processed in the order they are added.
+
+### Example: Applying the Black & White Filter
+
+
+```go
+grids := []*gim.Grid{
+    {
+        ImageFilePath:   "./cmd/gim/input/ginger2.png",
+        BackgroundColor: color.White,
+        Filters: []imagefilter.FilterType{
+            imagefilter.BlackAndWhite,
+        },
+    },
+    {
+        ImageFilePath:   "./cmd/gim/input/ginger2.png",
+        BackgroundColor: color.RGBA{R: 0x8b, G: 0xd0, B: 0xc6},
+    },
+}
+```
+#### Output:
+![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/black-white-filter.jpg)
 
 ## Functional Options
 
@@ -150,11 +181,11 @@ rgba, err := gim.New(
 	gim.OptGridSize(200,150),
 ).Merge()
 ```
-#### Output
+#### Output:
 ![](https://raw.githubusercontent.com/ozankasikci/ozankasikci.github.io/master/gim/grid-resize-pixels-200-150.jpg)
 
 ## TODO
 - [x] Add colored background support
 - [ ] Add resize support (stretch, fit etc.)
-- [ ] Add filters
+- [x] Add filters
 
