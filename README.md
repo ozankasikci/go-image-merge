@@ -140,14 +140,12 @@ To apply filters, include them in the `Filters` slice of the `Grid` struct. Each
 grids := []*gim.Grid{
     {
         ImageFilePath:   "./cmd/gim/input/ginger2.png",
-        BackgroundColor: color.White,
         Filters: []imagefilter.FilterType{
             imagefilter.BlackAndWhite,
         },
     },
     {
         ImageFilePath:   "./cmd/gim/input/ginger2.png",
-        BackgroundColor: color.RGBA{R: 0x8b, G: 0xd0, B: 0xc6},
     },
 }
 ```
