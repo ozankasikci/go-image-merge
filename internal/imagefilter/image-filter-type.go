@@ -7,4 +7,6 @@ const (
 	NoFilter FilterType = iota
 	// BlackAndWhite applies a black and white filter.
 	BlackAndWhite
+	Vignette
+	Sepia
 )

@@ -15,7 +15,7 @@ func main() {
 			ImageFilePath:   "./cmd/gim/input/ginger.png",
 			BackgroundColor: color.White,
 			Filters: []imagefilter.FilterType{
-				imagefilter.BlackAndWhite,
+				imagefilter.Vignette,
 			},
 		},
 		{
