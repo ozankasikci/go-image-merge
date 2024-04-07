@@ -34,7 +34,7 @@ Import the library and give the image paths and grid size as the minimum require
 Basic usage:
 
 ```go
-import gim "github.com/ozankasikci/go-image-merge"
+import gim "github.com/ozankasikci/go-imagemerge"
 
 // accepts *Grid instances, grid unit count x, grid unit count y
 // returns an *image.RGBA object
@@ -131,7 +131,8 @@ grids := []*gim.Grid{
     {ImageFilePath: "kitten.jpg"},
     {ImageFilePath: "kitten.jpg"},
 }
-rgba, err := gim.New(grids, 1, 2,
+rgba, err := gim.New(
+	grids, 1, 2,
 	gim.OptBaseDir("./cmd/gim/input"),
 ).Merge()
 ```
@@ -143,7 +144,8 @@ grids := []*gim.Grid{
     {ImageFilePath: "kitten.jpg"},
     {ImageFilePath: "kitten.jpg"},
 }
-rgba, err := gim.New( grids, 2, 1,
+rgba, err := gim.New(
+	grids, 2, 1,
 	gim.OptBaseDir("./cmd/gim"),
 	gim.OptGridSize(200,150),
 ).Merge()

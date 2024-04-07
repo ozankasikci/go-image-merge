@@ -1,9 +1,8 @@
-package goimagemerge
+package imagemerge
 
 import (
 	"errors"
 	"image"
-	"image/color"
 	"image/draw"
 	"image/jpeg"
 	"image/png"
@@ -22,16 +21,6 @@ const (
 	// The size in pixels is set to the nth image size
 	gridSizeFromImage
 )
-
-// Grid holds the data for each grid
-type Grid struct {
-	Image           image.Image
-	ImageFilePath   string
-	BackgroundColor color.Color
-	OffsetX         int
-	OffsetY         int
-	Grids           []*Grid
-}
 
 // MergeImage is the struct that is responsible for merging the given images
 type MergeImage struct {
@@ -86,7 +75,7 @@ func OptGridSizeFromNthImageSize(n int) func(*MergeImage) {
 
 func (m *MergeImage) readGridImage(grid *Grid) (image.Image, error) {
 	if grid.Image != nil {
-		return grid.Image, nil
+		return grid.ApplyFilters(grid.Image), nil
 	}
 
 	imgPath := grid.ImageFilePath
@@ -95,7 +84,12 @@ func (m *MergeImage) readGridImage(grid *Grid) (image.Image, error) {
 		imgPath = path.Join(m.BaseDir, grid.ImageFilePath)
 	}
 
-	return m.ReadImageFile(imgPath)
+	img, err := m.ReadImageFile(imgPath)
+	if err != nil {
+		return nil, err
+	}
+
+	return grid.ApplyFilters(img), nil
 }
 
 func (m *MergeImage) readGridsImages() ([]image.Image, error) {

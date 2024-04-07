@@ -1,7 +1,8 @@
 package main
 
 import (
-	gim "github.com/ozankasikci/go-image-merge"
+	"github.com/ozankasikci/go-image-merge/internal/imagefilter"
+	gim "github.com/ozankasikci/go-image-merge/internal/imagemerge"
 	"image/color"
 	"image/jpeg"
 	"log"
@@ -13,6 +14,9 @@ func main() {
 		{
 			ImageFilePath:   "./cmd/gim/input/ginger.png",
 			BackgroundColor: color.White,
+			Filters: []imagefilter.FilterType{
+				imagefilter.BlackAndWhite,
+			},
 		},
 		{
 			ImageFilePath:   "./cmd/gim/input/ginger.png",
