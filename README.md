@@ -128,12 +128,14 @@ rgba, err := gim.New(grids, 2, 1).Merge()
 ### Available Filters
 
 - **Black & White**: Converts an image to grayscale.
+- **Sepia**: Applies a sepia filter to an image.
+- **Vignette**: Applies a vignette filter to an image.
 
 ### Applying Filters
 
 To apply filters, include them in the `Filters` slice of the `Grid` struct. Each `Grid` can have multiple filters applied, which will be processed in the order they are added.
 
-### Example: Applying the Black & White Filter
+### Example: Black & White Filter
 
 
 ```go
