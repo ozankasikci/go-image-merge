@@ -1,3 +1,9 @@
+## v0.3.0 - 2024-04-07
+- Added filter support
+- fixed ReadImageFile func memory leak by @blue14753 in https://github.com/ozankasikci/go-image-merge/pull/2
+- Pass in images by @marcsantiago in https://github.com/ozankasikci/go-image-merge/pull/5
+- Grid: Image field is now image.Image by @gucio321 in https://github.com/ozankasikci/go-image-merge/pull/9
+
 ## v0.2.2 - 2019-12-01
 ### Bug Fixes
 - Check images before trying to merge 
