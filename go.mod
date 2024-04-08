@@ -1,3 +1,3 @@
-module github.com/ozankasikci/go-image-merge/v3
+module github.com/ozankasikci/go-image-merge
 
 go 1.13
