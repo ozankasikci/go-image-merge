@@ -1,4 +1,4 @@
-package imagemerge
+package goimagemerge
 
 import (
 	"errors"

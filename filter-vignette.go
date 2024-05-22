@@ -1,4 +1,4 @@
-package imagefilter
+package goimagemerge
 
 import (
 	"image"

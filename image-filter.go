@@ -1,4 +1,4 @@
-package imagefilter
+package goimagemerge
 
 import "image"
 
@@ -13,6 +13,6 @@ func Register(filterType FilterType, filter Filter) {
 	Filters[filterType] = filter
 }
 
-func Get(filterType FilterType) Filter {
+func GetFilter(filterType FilterType) Filter {
 	return Filters[filterType]
 }

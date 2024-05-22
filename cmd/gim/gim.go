@@ -1,8 +1,7 @@
 package main
 
 import (
-	"github.com/ozankasikci/go-image-merge/internal/imagefilter"
-	gim "github.com/ozankasikci/go-image-merge/internal/imagemerge"
+	gim "github.com/ozankasikci/go-image-merge"
 	"image/color"
 	"image/jpeg"
 	"log"
@@ -14,8 +13,8 @@ func main() {
 		{
 			ImageFilePath:   "./cmd/gim/input/ginger.png",
 			BackgroundColor: color.White,
-			Filters: []imagefilter.FilterType{
-				imagefilter.Vignette,
+			Filters: []gim.FilterType{
+				gim.Vignette,
 			},
 		},
 		{

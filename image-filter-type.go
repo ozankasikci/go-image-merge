@@ -1,4 +1,4 @@
-package imagefilter
+package goimagemerge
 
 // FilterType defines the type of filter to apply to the image.
 type FilterType int
