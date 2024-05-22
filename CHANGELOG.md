@@ -1,3 +1,6 @@
+## v0.3.1 - 2024-05-22
+- Make the library importable, remove internal folder
+
 ## v0.3.0 - 2024-04-07
 - Added filter support
 - fixed ReadImageFile func memory leak by @blue14753 in https://github.com/ozankasikci/go-image-merge/pull/2
