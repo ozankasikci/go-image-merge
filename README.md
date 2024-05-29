@@ -35,7 +35,7 @@ Import the library and give the image paths and grid size as the minimum require
 Basic usage:
 
 ```go
-import gim "github.com/ozankasikci/go-imagemerge"
+import gim "github.com/ozankasikci/go-image-merge"
 
 // accepts *Grid instances, grid unit count x, grid unit count y
 // returns an *image.RGBA object
