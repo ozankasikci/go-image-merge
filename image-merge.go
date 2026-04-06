@@ -10,6 +10,8 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+
+	"golang.org/x/image/webp"
 )
 
 // Specifies how the grid pixel size should be calculated
@@ -125,6 +127,8 @@ func (m *MergeImage) ReadImageFile(path string) (image.Image, error) {
 
 	if ext == "jpg" || ext == "jpeg" {
 		img, err = jpeg.Decode(imgFile)
+	} else if ext == "webp" {
+		img, err = webp.Decode(imgFile)
 	} else {
 		img, err = png.Decode(imgFile)
 	}
